@@ -1,0 +1,30 @@
+services:
+  bot:
+    container_name: app
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - ps
+  db:
+    restart: always
+    image: postgres
+    container_name: psql_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+    - "5432:5432"
+    networks:
+      - ps
+volumes:
+  pg_data:
+networks:
+  ps:
